@@ -92,4 +92,12 @@ header a {
 
 #contact {
     background-image: linear-gradient(rgba(255,255,255,0.75),rgba(255,255,255,0.75)), url('../assets/images/backgrounds/silhouette.jpeg');
+    text-align: center;
+}
+
+.center {
+/*  display: block;*/
+  margin-left: auto;
+/*  margin-right: auto;*/
+  width: 10%;
 }
