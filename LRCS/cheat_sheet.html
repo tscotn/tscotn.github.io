@@ -1,0 +1,585 @@
+<!DOCTYPE=html>
+
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Linear Regression Cheat Sheet</title>
+        <script src="prism.min.js" type="text/javascript"></script>
+<!--        <script src="./prism.r.js" type="text/javascript"></script>-->
+        <link rel="stylesheet" href="./style.css">
+    </head>
+    <body>
+        <header>
+        <div class="title">
+        <h1>Linear Regression Cheat Sheet</h1>
+        <p>template code and tricks for performing simple and multiple linear regression in R.</p>
+        </div>
+        <a class="print_button" href="javascript:window.print()">print this page</a>
+        <nav>
+            <ul>
+                <a href="#basic">Basic</a>
+                <li>Packages</li>
+                <li>Reading in Data</li>
+            </ul>
+            
+            <ul>
+                <a href="#exploratory">Exploratory</a>
+                <li>Correlation</li>
+            </ul>
+            
+
+            <ul>
+                <a href="#fitting">Fitting</a>
+                <li>Linear Model</li>
+            </ul>
+            
+            <ul>
+                <a href="#plotting">Plotting</a>
+                <li>Scatterplot</li>
+            </ul>
+            
+            <ul class="diagnostic">
+                <a href="#graphical">Graphical Diagnositics</a>
+                    <li>Residuals vs. Fitted Values Plot</li>
+                    <li>Residuals vs. Predictor Plot</li>
+                    <li>Sequence Plot</li>
+                    <li>Boxplot</li>
+                    <li>Histogram</li>
+                    <li>Normal Probability Plot</li>
+                    <li>Added Variable/Partial Regression Plots</li>
+                    <li>DFBETAS</li>
+                    <li>DFFITS</li>
+            </ul>
+                
+            <ul class="diagnostic">
+                <a href="#numerical">Numerical Diagnostics</a>
+                    <li>Shapiro-Wilk Test</li>
+                    <li>Brown-Forsythe/Levene Tests</li>
+                    <li>Cook’s Distance</li>
+                    <li>Variance Inflation Factors</li>
+            </ul>
+            
+            
+            <ul>
+                <a href="#transforming">Transforming</a>
+                    <li>Box-Cox Test</li>
+                    <li>Transformed Linear Model</li>
+            </ul>
+            
+            <ul>
+                <a href="#metrics">Evaluation Metrics</a>
+                    <li>Mean Square Error</li>
+                    <li>Root Mean Square Error</li>
+                    <li>Mean Absolute Error</li>
+                    <li>R-Squared</li>
+                    <li>Adjusted R-Squared</li>
+                    <li>F-Statistic</li>
+            </ul>
+            
+            <ul>
+                <a href="#intervals">Confidence and Predictor Intervals</a>
+                    <li>95% Confidence Interval for Slope</li>
+                    <li>Hypothesis Test for Slope</li>
+                    <li>Confidence Band for Average of Y</li>
+                    <li>Prediction Interval for Y</li>
+                    <li>Untransforming plots</li>
+            </ul>
+            
+            <ul>
+                <a href="#misc">Miscellaneous</a>
+                    <li>Tips/Tricks</li>
+                    <li>Keyboard-shortcuts for Mac</li>
+                    <li>Scaling and Labelling in ggplot2</li>
+                    <li>LaTeX</li>
+            </ul>
+        </nav>
+        </header>
+        
+<!--        <h3>key:</h3>-->
+<!--        <ul>-->
+<!--            <li>? = select parameter</li>-->
+<!--            <li>data = input data</li>-->
+<!--        </ul>-->
+        
+        <hr id="basic">
+        <h2>Basic:</h2>
+        <h3>Packages:</h3>
+        <pre>
+    <code class="language-r">
+library(tidyverse)
+library(ggfortify)  # plot lm objects using ggplot instead of base R
+library(car)  # needed for added-variable plots and dfbetas and dffits
+library(corrplot)
+
+#to install:
+install.packages("package")</code>
+        </pre>
+    
+        <h3>Reading in data:</h3>
+        <pre><code class='language-r'>
+#general:
+data <- read.table('path.extension', sep=' ', header=True)
+
+#csv specific:
+data <- read.csv('path.extention', sep = ' ')</code>
+        </pre>
+
+        <hr id="exploratory">
+        <h2>Exploratory:</h2>
+        <pre><code class='language-r'>
+head(data, n=?)  # first n rows of data
+summary(data) # mean, etc. of each field
+#see also scatterplot</code>
+        </pre>
+
+        <h3>Correlation:</h3>
+        <pre><code class='language-r'>
+#Correlation:
+round(cor(data), digits=?)  # numerical matrix of values
+
+cor(data$y, data$x)  # numerical single value
+
+corrplot(cor(data), type="upper”)  # color/shape-coded matrix</code>
+        </pre>
+
+        <hr id="fitting">
+        <h2>Fitting:</h2>
+
+        <h3>Linear Model:</h3>
+        <pre><code class='language-r'>
+#Simple linear regression
+data.lm <- lm(y ~ x, data=data)
+
+#Multiple linear regression
+data.lm <- lm(y ~ ., data=data) #!make sure data.frame is properly subsetted!
+
+#Saving residuals and fitted.values
+data$residuals <- data.lm$residuals
+data$fitted.values <- data.lm$fitted.values</code>
+        </pre>
+
+        <hr id="plotting">
+        <h2>Plotting:</h2>
+        <h3>Scatterplot:</h3>
+        <pre><code class='language-r'>
+#Simple Linear Regression:
+data.base.plot <- ggplot(data = data, mapping = aes(x = x, y = y)) +
+    geom_point() +
+    theme_bw() +
+    theme(aspect.ratio = 1) +
+    geom_smooth(method = "lm", se = FALSE) # add line-of-best-fit
+
+#Multiple Linear Regression:
+pairs(data, pch=19)
+
+#or
+
+plot(data, pch=19))
+
+#pch=19 changes circles to dots in matrix</code>
+        </pre>
+
+        <hr id="graphical">
+        <h2>Graphical Diagnostics:</h2>
+        <h3>Residuals vs. Fitted Values Plot:</h3>
+        <pre><code class='language-r'>
+autoplot(data.lm, which = 1, ncol = 1, nrow = 1) + theme(aspect.ratio=1)</code>
+        </pre>
+
+        <h3>Residuals vs. Predictor Plot:</h3>
+        <pre><code class='language-r'>
+#Simple Linear Regression
+ggplot(data=data, mapping=aes(x=predictor, y=residuals)) +
+    geom_point() +
+    theme(aspect.ratio=1)
+
+#Multiple Linear Regression  # see also miscellaneous/looping in ggplot2
+predictors = names(data)[-1]  # make sure this only contains predictors
+for (predictor in predictors) {
+    plot <- ggplot(data=data, mapping=aes(x=!!sym(predictor), y=residuals)) +
+        geom_point() +
+        theme(aspect.ratio=1)
+    
+    print(plot)
+}</code>
+        </pre>
+        
+        <h3>Sequence Plot:</h3>
+        <pre><code class='language-r'>
+ggplot(data) +
+    geom_line(mapping = aes(x = 1:nrow(data), y = residuals)) +
+    theme_bw() +
+    xlab("Order in Data Set") +
+    theme(aspect.ratio = 1)
+
+#Note: data must be in some sequential order for this to be appropriate</code>
+        </pre>
+            
+        <h3>Boxplot:</h3>
+        <pre><code class='language-r'>
+ggplot(data=data, mapping=aes(y=residuals)) +
+    geom_boxplot() +
+    theme(aspect.ratio=1)</code>
+        </pre>
+        
+        <h3>Histogram:</h3>
+        <pre><code class='language-r'>
+ggplot(data = data, mapping = aes(x = residuals)) +
+    geom_histogram(mapping = aes(y = ..density..), binwidth = ?) +
+    stat_function(fun = dnorm, color = "red", size = 2,
+                args = list(mean = mean(data$residuals), sd = sd(data$residuals)))</code>
+        </pre>
+        
+        <h3>Normal Probability Plot:</h3>
+        <pre><code class='language-r'>
+autoplot(data.lm, which = 2, ncol = 1, nrow = 1) + theme(aspect.ratio=1)</code>
+        </pre>
+
+        <h3>Added Variable/Partial Regression Plots</h3>
+        <pre><code class='language-r'>
+avPlots(data.lm)</code>
+        </pre>
+
+        <h3>DFBETAS:</h3>
+        <pre><code class='language-r'>
+#Simple Linear Regression:
+data.dfbetas <- as.data.frame(dfbetas(data.lm))
+data.dfbetas$obs <- 1:nrow(data)
+
+#plot:
+ggplot(data = data.dfbetas) +
+    geom_point(mapping = aes(x = obs, y = abs(x))) +
+    ylab("Absolute Value of DFBETAS for X") +
+    xlab("Observation Number") +
+    # geom_hline(mapping = aes(yintercept = 1),
+    #            color = "red", linetype = "dashed") +  # for n <= 30
+    geom_hline(mapping = aes(yintercept = 2 / sqrt(length(obs))),
+             color = "red", linetype = "dashed") +  # for n > 30
+    theme_bw() +
+    theme(aspect.ratio = 1, plot.title = element_blank())
+
+#print:
+#for n <= 30:
+x.extreme.dfbetas <- data.dfbetas[abs(data.dfbetas$x) > 1,]
+x.extreme.dfbetas[order(x.extreme.dfbetas$x),]
+
+#for n > 30:
+x.extreme.dfbetas <- data.dfbetas[abs(data.dfbetas$x) > 2 / sqrt(length(data.dfbetas$obs)),]
+x.extreme.dfbetas[order(x.extreme.dfbetas$x),]
+
+
+#Multiple Linear Regression:
+predictors = names(data)[-1]  # make sure this only contains predictors
+
+for (predictor in predictors) {
+    plot <- ggplot(data = data.dfbetas) +
+        geom_point(mapping = aes(x = obs, y = abs(!!sym(predictor)))) +
+        ylab(paste("Absolute Value of DFBETAS for ", predictor, sep=''))
+        xlab("Observation Number") +
+        # geom_hline(mapping = aes(yintercept = 1),
+        #           color = "red", linetype = "dashed") +  # for n <= 30
+        geom_hline(mapping = aes(yintercept = 2 / sqrt(length(obs))),
+                    color = "red", linetype = "dashed") +  # for n > 30
+        theme_bw() +
+        theme(aspect.ratio = 1, plot.title = element_blank())
+  
+    print(plot)
+
+    # for n <= 30:
+    # print(data.dfbetas[abs(data.dfbetas[predictor]) > 1, c(predictor, 'obs')])
+
+    # for n > 30:
+    print(data.dfbetas[abs(data.dfbetas[predictor]) > 2 / sqrt(length(data.dfbetas$obs)), c(predictor, 'obs')])
+}</code>
+        </pre>
+
+        <h3>DFFITS:</h3>
+        <pre><code class='language-r'>
+data.dffits <- data.frame("dffits" = dffits(data.lm))
+data.dffits$obs <- 1:nrow(data)
+
+#plot:
+ggplot(data = data.dffits) +
+    geom_point(mapping = aes(x = obs, y = abs(dffits))) +
+    ylab("Absolute Value of DFFITS for Y") +
+    xlab("Observation Number") +
+    # geom_hline(mapping = aes(yintercept = 1),
+    #            color = "red", linetype = "dashed") +  # for n <= 30
+    geom_hline(mapping = aes(yintercept = 2 * sqrt(length(data.lm$coefficients) / length(obs))),
+                color = "red", linetype = "dashed") +  # for n > 30
+    theme_bw() +
+    theme(aspect.ratio = 1, plot.title = element_blank())
+
+    #print:
+    # for n <= 30
+    # data.dffits[abs(data.dffits$dffits) > 1,]
+
+    # for n > 30
+    data.dffits[abs(data.dffits$dffits) > 2 * sqrt(length(data.lm$coefficients) / length(data.dffits$obs)),]</code>
+        </pre>
+
+        <hr id="numerical">
+        <h2>Numerical Diagnostics:</h2>
+
+        <h3>Shapiro-Wilk Test:</h3>
+        <pre><code class='language-r'>
+shapiro.test(data$residuals)</code>
+        </pre>
+        
+        <h3>Brown-Forsythe or Levene Test:</h3>
+        <pre><code class='language-r'>
+grp <- as.factor(c(rep("lower", floor(dim(data)[1] / 2)),
+                   rep("upper", ceiling(dim(data)[1] / 2))))
+leveneTest(data[order(data$x), "residuals"] ~ grp, center = median)</code>
+        </pre>
+        
+        <h3>Cook’s Distance:</h3>
+        <pre><code class='language-r'>
+data$cooksd <- cooks.distance(data.lm)
+data[data$cooksd >= 4 / length(data$cooksd), ]</code>
+        </pre>
+        
+        <h3>Variance Inflation Factors:</h3>
+        <pre><code class='language-r'>
+(data.vif <- vif(data.lm))
+max(data.vif)
+mean(data.vif)</code>
+        </pre>
+
+        <hr id="transforming">
+        <h2>Transforming:</h2>
+
+        <h3>Box-Cox Test:</h3>
+        <pre><code class='language-r'>
+bc <- boxCox(data.lm)
+(Lambda <- bc$x[which.max(bc$y)])</code>
+        </pre>
+
+        <h3>Transformed Linear Model:<h3>
+        <pre><code class='language-r'>
+lambda = 1  # lambda = 1 means that no transformation occurs. Lambda = 0 is invalid
+
+#transform data:
+data$t_y <- fires$y^lambda
+data$t_x <- fires$x^lambda
+# also consider sqrt(), log(), etc.
+
+data.t.lm <- lm(t_y ~ t_x, data)
+data$t_residuals <- data.t.lm$residuals
+data$t_fitted.values <- data.t.lm$fitted.values
+summary(data.t.lm)</code>
+        </pre>
+
+        <hr id="metrics">
+        <h2>Evaluation Metrics:</h2>
+        <pre><code class='language-r'>
+#to get anova output:
+anova <- aov(data.lm)</code>
+        </pre>
+
+        <h3>Mean Square Error:</h3>
+        <pre><code class='language-r'>
+mse <- summary(anova)[[1]][2,2] / summary(anova)[[1]][2,1]
+print(paste("Mean Square Error: ", toString(mse), split = ''))</code>
+        </pre>
+
+        <h3>Root Mean Square Error:</h3>
+        <pre><code class='language-r'>
+rmse <- sqrt(mse)
+print(paste("Root Mean Square Error: ", toString(rmse), split = ''))</code>
+        </pre>
+
+        <h3>Mean Absolute Error:</h3>
+        <pre><code class='language-r'>
+mae <- sum(abs(data$y - data$fitted.values)) / (length(data$y) - 2)
+print(paste("Mean Absolute Error: ", toString(mae), split = ''))</code>
+        </pre>
+
+        <h3>R-Squared:<h3>
+        <pre><code class='language-r'>
+r_squared <- summary(anova)[[1]][1, 2] / (summary(anova)[[1]][1, 2] + summary(anova)[[1]][2, 2])
+print(paste("R-Squared: ", toString(r_squared), split = ''))</code>
+        </pre>
+
+        <h3>Adjusted R-Squared:</h3>
+        <pre><code class='language-r'>
+adj_r_squared <- summary(data.lm)$adj.r.squared
+print(paste("Adjusted R-Squared: ", toString(adj_r_squared), split = ''))</code>
+    </pre>
+
+
+        <h3>F-Statistic</h3>
+        <pre><code class='language-r'>
+f_statistic <- summary(data.lm)$fstatistic
+print(paste("F-Statistic: ", toString(f_statistic), split = ''))</code>
+        </pre>
+
+        <hr id='intervals'>
+        <h2>Confidence and Predictor Intervals:</h2>
+        <pre><code class='language-r'>
+#to get new x values:
+new.x <- seq(min(data$x), max(data$x), by=0.05)</code>
+    </pre>
+
+        <h3>95% Confidence Interval for Slope:</h3>
+        <pre><code class='language-r'>
+confint(data.lm, parm=“x")</code>
+        </pre>
+
+        <h3>Hypothesis Test for Slope:</h3>
+        <pre><code class='language-r'>
+(t.stat <- (data.lm$coefficients[2] - 0) / summary(data.lm)$coefficients[2, 2])
+pt(t.stat, df = nrow(data) - 2, lower.tail=TRUE) * 2</code>
+    </pre>
+
+
+        <h3>Confidence Band for Average of Y:</h3>
+        <pre><code class='language-r'>
+conf.int.mean <- predict(data.lm,
+                         newdata = data.frame(x = new.x),
+                         interval = "confidence",
+                         level = .95)
+ci.data <- as.data.frame(cbind(new.x, conf.int.mean))
+
+
+(data.plot <- data.plot +
+    geom_line(data = ci.data, mapping = aes(x = new.x, y = lwr),
+        color = "#d95f02", size = 1) +
+    geom_line(data = ci.data, mapping = aes(x = new.x, y = upr),
+        color = "#d95f02", size = 1) +
+    geom_smooth(method='lm', se=FALSE))</code>
+        </pre>
+
+        <h3>Prediction Interval for Y:</h3>
+        <pre><code class='language-r'>
+pred.int.mean <- predict(data.lm,
+                         newdata = data.frame(x = new.x),
+                         interval = "prediction",
+                         level = .95)
+pi.data <- as.data.frame(cbind(new.x, pred.int.mean))
+
+data.plot +
+    geom_line(data = pi.data, mapping = aes(x = new.x, y = lwr), color = "#1b9e77", size = 1) +
+    geom_line(data = pi.data, mapping = aes(x = new.x, y = upr), color = "#1b9e77", size = 1)</code>
+        </pre>
+
+        <h3>Untransform plots:</h3>
+        <pre><code class='language-r'>
+# average values of y based on vector of x values
+new.y.preds <- (data.lm$coefficients[1] +
+  data.lm$coefficients[2] * new.x)^(1/lambda)  # undo transformation here
+preds <- data.frame(new.x, new.y.preds)
+
+# average values of y for 95% confidence interval, untransformed
+conf.int.mean <- predict(data.lm,
+                              newdata = data.frame(x = new.x),
+                              interval = "confidence",
+                              level = 0.95)^(1/lambda)
+
+# new value of y for 95% prediction interval, untransformed
+pred.int.mean <- predict(data.lm,
+                              newdata = data.frame(x = new.x),
+                              interval = "prediction",
+                              level = 0.95)^(1/lambda)
+
+ggplot() +
+    geom_point(data = data, mapping = aes(x = x, y = y)) +
+    geom_line(data = preds,
+            aes(x = new.x, y = new.y.preds),
+            size = 1.5, color ="blue") +
+    geom_line(mapping = aes(x = new.x, y = conf.int.mean[, 2]),
+            color = "#d95f02", size = 1.5) +
+    geom_line(mapping = aes(x = new.x, y = conf.int.mean[, 3]),
+            color = "#d95f02", size = 1.5) +
+    geom_line(mapping = aes(x = new.x, y = pred.int.mean[, 2]),
+            color = "#1b9e77", size = 1.5) +
+    geom_line(mapping = aes(x = new.x, y = pred.int.mean[, 3]),
+            color = "#1b9e77", size = 1.5) +
+    theme(aspect.ratio = 1)</code>
+        </pre>
+        
+        <hr id="misc">
+        <h2>Miscellaneous:</h2>
+        <h3>Tips/Tricks:</h3>
+        <pre><code class='language-r'>
+#subsetting rows:
+data[data$var == value,]
+    #conditionals include ==, <=, <, >=, >
+
+#subsetting columns:
+data[columns]
+
+#getting names of data, summary stats, output:
+names(data)
+
+#outputting and saving simultaneously:
+(variable <- value)
+
+#printing:
+print(paste(“String: “, toString(value), split =''))
+
+#looping in ggplot2:
+for (name in variable_names) {
+    plot <- ggplot(data=data, mapping=aes(x=!!sym(name), y=residuals)) +
+        geom_point() +  # for example
+        theme(aspect.ratio=1)
+
+    print(plot)
+}</code>
+        </pre>
+
+        <h3>Keyboard-shortcuts for Mac:</h3>
+        <pre><code class='language-r'>
+#Markdown: command + option + i
+
+```{r}
+```
+
+# assignment: option + -
+
+ <-</code>
+        </pre>
+
+        <h3>Scaling and Labelling in ggplot2:</h3>
+        <pre><code class='language-r'>
+#y limits:
+y_interval <- ?
+y_lower_limit <- floor(min(data$y)/10)*10
+y_upper_limit <- ceiling(max(data$y)/10)*10
+
+#x limits:
+x_interval <- ?
+x_lower_limit <- floor(min(data[predictor])/10)*10
+x_upper_limit <- ceiling(max(data[predictor])/10)*10
+
+ggplot() +
+    xlab(“X Label”) +
+    ylab(“Y Label”) +
+    scale_x_continuous(limits = c(x_lower_limit, x_upper_limit),
+                        breaks = seq(x_lower_limit, x_upper_limit, by = x_interval),
+                        minor_breaks = seq(x_lower_limit, x_upper_limit, by = x_interval)) +
+    scale_y_continuous(limits = c(y_lower_limit, y_upper_limit),
+                        breaks = seq(y_lower_limit, y_upper_limit, by = y_interval),
+                        minor_breaks = seq(y_lower_limit, y_upper_limit, by = y_interval))
+    theme(aspect.ratio = 1)
+    
+#Note: code is generally good for 0 < x_i < 100, but limit scaling depends on range of x.</code>
+        </pre>
+
+        <h3>LaTeX:</h3>
+        <pre><code class='language-r'>
+#General/Theoretical Model:
+$\widehat{\text{y}_i} = \beta_0 + \beta_1\times\text{x}_i + \epsilon_i \space\text{where} \space\epsilon_i  \stackrel{iid}{\sim} \text{N}(\mu,\,\sigma^{2})$
+
+#Fitted Model:
+$\widehat{\text{y}_i} = \beta_0 + \beta_1\times\text{x}_i$
+
+#Transforming Data:
+$\log{}$
+$\sqrt{}$</code>
+        </pre>
+
+
+        <footer>built by scot nielson • 2020 • report issues </footer>
+    </body>
+<html>
