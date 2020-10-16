@@ -20,50 +20,49 @@
                 <a href="#basic">Basic</a>
                 <li>Packages</li>
                 <li>Reading in Data</li>
-            </ul>
-            
-            <ul>
+                <br>
+                
                 <a href="#exploratory">Exploratory</a>
                 <li>Correlation</li>
+                <br>
+                
+                <a href="#plotting">Plotting</a>
+                <li>Scatterplot</li>
+                <li>Boxplot</li>
+                <li>Histogram</li>
+                <li>Sequence Plot</li>
             </ul>
-            
 
             <ul>
                 <a href="#fitting">Fitting</a>
                 <li>Linear Model</li>
-            </ul>
-            
-            <ul>
-                <a href="#plotting">Plotting</a>
-                <li>Scatterplot</li>
+                <br>
+                <a href="#transforming">Transforming</a>
+                    <li>Box-Cox Test</li>
+                    <li>Transformed Linear Model</li>
+                <br>
+                <a href="#misc">Miscellaneous</a>
+                <li>Tips/Tricks</li>
+                <li>Keyboard-shortcuts for Mac</li>
+                <li>Scaling and Labelling in ggplot2</li>
+                <li>LaTeX</li>
             </ul>
             
             <ul class="diagnostic">
                 <a href="#graphical">Graphical Diagnositics</a>
                     <li>Residuals vs. Fitted Values Plot</li>
                     <li>Residuals vs. Predictor Plot</li>
-                    <li>Sequence Plot</li>
-                    <li>Boxplot</li>
-                    <li>Histogram</li>
                     <li>Normal Probability Plot</li>
                     <li>Added Variable/Partial Regression Plots</li>
                     <li>DFBETAS</li>
                     <li>DFFITS</li>
-            </ul>
-                
-            <ul class="diagnostic">
+                    <br>
+                    
                 <a href="#numerical">Numerical Diagnostics</a>
                     <li>Shapiro-Wilk Test</li>
                     <li>Brown-Forsythe/Levene Tests</li>
                     <li>Cook’s Distance</li>
                     <li>Variance Inflation Factors</li>
-            </ul>
-            
-            
-            <ul>
-                <a href="#transforming">Transforming</a>
-                    <li>Box-Cox Test</li>
-                    <li>Transformed Linear Model</li>
             </ul>
             
             <ul>
@@ -74,9 +73,8 @@
                     <li>R-Squared</li>
                     <li>Adjusted R-Squared</li>
                     <li>F-Statistic</li>
-            </ul>
-            
-            <ul>
+                    <br>
+                    
                 <a href="#intervals">Confidence and Predictor Intervals</a>
                     <li>95% Confidence Interval for Slope</li>
                     <li>Hypothesis Test for Slope</li>
@@ -85,14 +83,18 @@
                     <li>Untransforming plots</li>
             </ul>
             
+            <div class="datasets">
             <ul>
-                <a href="#misc">Miscellaneous</a>
-                    <li>Tips/Tricks</li>
-                    <li>Keyboard-shortcuts for Mac</li>
-                    <li>Scaling and Labelling in ggplot2</li>
-                    <li>LaTeX</li>
-            </ul>
-        </nav>
+                <h3>Datasets:</h3>
+            <li><a target="_blank" href="https://github.com/BuzzFeedNews/everything">BuzzFeed GitHub</a></li>
+            <li><a target="_blank" href="https://docs.google.com/spreadsheets/d/1wZhPLMCHKJvwOkP4juclhjFgqIY8fQFMemwKL2c64vk/edit#gid=0">Data is Plural</a></li>
+            <li><a target="_blank" href="https://data.fivethirtyeight.com/">FiveThirtyEight</a></li>
+            <li><a target="_blank" href="https://www.forfeiture.gov/Default.htm">Civil Forfeiture</a></li>
+            <li><a target="_blank" href="https://github.com/duncangeere/00sindiebanddatabase/blob/master/00sindiebanddatabase.csv">Indie Bands</a></li>
+            <li><a target="_blank" href="http://users.stat.ufl.edu/~winner/datasets.html">Miscellaneous Datasets</a></li>
+            </div>
+            
+            </nav>
         </header>
         
 <!--        <h3>key:</h3>-->
@@ -103,6 +105,7 @@
         
         <hr id="basic">
         <h2>Basic:</h2>
+        
         <h3>Packages:</h3>
         <pre>
     <code class="language-r">
@@ -142,22 +145,6 @@ cor(data$y, data$x)  # numerical single value
 corrplot(cor(data), type="upper”)  # color/shape-coded matrix</code>
         </pre>
 
-        <hr id="fitting">
-        <h2>Fitting:</h2>
-
-        <h3>Linear Model:</h3>
-        <pre><code class='language-r'>
-#Simple linear regression
-data.lm <- lm(y ~ x, data=data)
-
-#Multiple linear regression
-data.lm <- lm(y ~ ., data=data) #!make sure data.frame is properly subsetted!
-
-#Saving residuals and fitted.values
-data$residuals <- data.lm$residuals
-data$fitted.values <- data.lm$fitted.values</code>
-        </pre>
-
         <hr id="plotting">
         <h2>Plotting:</h2>
         <h3>Scatterplot:</h3>
@@ -179,6 +166,72 @@ plot(data, pch=19))
 #pch=19 changes circles to dots in matrix</code>
         </pre>
 
+        <h3>Boxplot:</h3>
+        <pre><code class='language-r'>
+ggplot(data=data, mapping=aes(y=residuals)) +
+    geom_boxplot() +
+    theme(aspect.ratio=1)</code>
+        </pre>
+        
+        <h3>Histogram:</h3>
+        <pre><code class='language-r'>
+ggplot(data = data, mapping = aes(x = residuals)) +
+    geom_histogram(mapping = aes(y = ..density..), binwidth = ?) +
+    stat_function(fun = dnorm, color = "red", size = 2,
+                args = list(mean = mean(data$residuals), sd = sd(data$residuals)))</code>
+        </pre>
+        
+        <h3>Sequence Plot:</h3>
+        <pre><code class='language-r'>
+ggplot(data) +
+    geom_line(mapping = aes(x = 1:nrow(data), y = residuals)) +
+    theme_bw() +
+    xlab("Order in Data Set") +
+    theme(aspect.ratio = 1)
+
+#Note: data must be in some sequential order for this to be appropriate</code>
+        </pre>
+        
+        <hr id="fitting">
+        <h2>Fitting:</h2>
+
+        <h3>Linear Model:</h3>
+        <pre><code class='language-r'>
+#Simple linear regression
+data.lm <- lm(y ~ x, data=data)
+
+#Multiple linear regression
+data.lm <- lm(y ~ ., data=data) #!make sure data.frame is properly subsetted!
+
+#Saving residuals and fitted.values
+data$residuals <- data.lm$residuals
+data$fitted.values <- data.lm$fitted.values</code>
+        </pre>
+        
+        <hr id="transforming">
+        <h2>Transforming:</h2>
+
+        <h3>Box-Cox Test:</h3>
+        <pre><code class='language-r'>
+bc <- boxCox(data.lm)
+(Lambda <- bc$x[which.max(bc$y)])</code>
+        </pre>
+
+        <h3>Transformed Linear Model:<h3>
+        <pre><code class='language-r'>
+lambda = 1  # lambda = 1 means that no transformation occurs. Lambda = 0 is invalid
+
+#transform data:
+data$t_y <- fires$y^lambda
+data$t_x <- fires$x^lambda
+# also consider sqrt(), log(), etc.
+
+data.t.lm <- lm(t_y ~ t_x, data)
+data$t_residuals <- data.t.lm$residuals
+data$t_fitted.values <- data.t.lm$fitted.values
+summary(data.t.lm)</code>
+        </pre>
+        
         <hr id="graphical">
         <h2>Graphical Diagnostics:</h2>
         <h3>Residuals vs. Fitted Values Plot:</h3>
@@ -202,32 +255,6 @@ for (predictor in predictors) {
     
     print(plot)
 }</code>
-        </pre>
-        
-        <h3>Sequence Plot:</h3>
-        <pre><code class='language-r'>
-ggplot(data) +
-    geom_line(mapping = aes(x = 1:nrow(data), y = residuals)) +
-    theme_bw() +
-    xlab("Order in Data Set") +
-    theme(aspect.ratio = 1)
-
-#Note: data must be in some sequential order for this to be appropriate</code>
-        </pre>
-            
-        <h3>Boxplot:</h3>
-        <pre><code class='language-r'>
-ggplot(data=data, mapping=aes(y=residuals)) +
-    geom_boxplot() +
-    theme(aspect.ratio=1)</code>
-        </pre>
-        
-        <h3>Histogram:</h3>
-        <pre><code class='language-r'>
-ggplot(data = data, mapping = aes(x = residuals)) +
-    geom_histogram(mapping = aes(y = ..density..), binwidth = ?) +
-    stat_function(fun = dnorm, color = "red", size = 2,
-                args = list(mean = mean(data$residuals), sd = sd(data$residuals)))</code>
         </pre>
         
         <h3>Normal Probability Plot:</h3>
@@ -344,30 +371,6 @@ data[data$cooksd >= 4 / length(data$cooksd), ]</code>
 (data.vif <- vif(data.lm))
 max(data.vif)
 mean(data.vif)</code>
-        </pre>
-
-        <hr id="transforming">
-        <h2>Transforming:</h2>
-
-        <h3>Box-Cox Test:</h3>
-        <pre><code class='language-r'>
-bc <- boxCox(data.lm)
-(Lambda <- bc$x[which.max(bc$y)])</code>
-        </pre>
-
-        <h3>Transformed Linear Model:<h3>
-        <pre><code class='language-r'>
-lambda = 1  # lambda = 1 means that no transformation occurs. Lambda = 0 is invalid
-
-#transform data:
-data$t_y <- fires$y^lambda
-data$t_x <- fires$x^lambda
-# also consider sqrt(), log(), etc.
-
-data.t.lm <- lm(t_y ~ t_x, data)
-data$t_residuals <- data.t.lm$residuals
-data$t_fitted.values <- data.t.lm$fitted.values
-summary(data.t.lm)</code>
         </pre>
 
         <hr id="metrics">
@@ -578,7 +581,6 @@ $\widehat{\text{y}_i} = \beta_0 + \beta_1\times\text{x}_i$
 $\log{}$
 $\sqrt{}$</code>
         </pre>
-
 
         <footer>built by scot nielson • 2020 • report issues </footer>
     </body>

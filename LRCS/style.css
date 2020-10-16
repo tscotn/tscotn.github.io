@@ -34,14 +34,15 @@ h2, h3, hr {
 
 nav {
     display: inline-grid;
-    grid-template-columns: repeat(6, 1fr);
+    padding-left: 2rem;
+    grid-template-columns: repeat(5, 1fr);
     column-gap: 3rem;
     row-gap: 0;
 }
 
-.diagnostic {
-    grid-row-start: span 2;
-}
+/*.diagnostic {*/
+/*    grid-row-start: span 2;*/
+/*}*/
 
 ul {
     margin: 0;
@@ -52,13 +53,17 @@ li {
     font-size: .8rem;
 }
 
+.datasets {
+/*    text-align: center;*/
+/*    margin-right: 2rem;*/
+/*    width: 100%;*/
+/*    grid-row-start: span 2;*/
+}
+
 footer {
     text-align: center;
     margin: 1rem;
 }
-
-
-
 
 /**
  * Tomorrow Night 80's theme. for JavaScript, CSS, R and HTML
