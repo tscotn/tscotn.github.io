@@ -83,6 +83,11 @@
                     <li>Untransforming plots</li>
             </ul>
             
+            <ul>
+                <a href="#selection">Variable Selection Procedures</a>
+                    <li>Best Subsets</li>
+            </ul>
+            
             <div class="datasets">
             <ul>
                 <h3>Datasets:</h3>
@@ -93,6 +98,7 @@
             <li><a target="_blank" href="https://www.forfeiture.gov/Default.htm">Civil Forfeiture</a></li>
             <li><a target="_blank" href="https://github.com/duncangeere/00sindiebanddatabase/blob/master/00sindiebanddatabase.csv">Indie Bands</a></li>
             <li><a target="_blank" href="http://users.stat.ufl.edu/~winner/datasets.html">Miscellaneous Datasets</a></li>
+            <li><a target="_blank" href="http://www.murderdata.org/">Murder Accountability Project</a></li>
             <li><a target="_blank" href="http://course1.winona.edu/bdeppa/Regression/Data/data.html">Winona State U Datasets</a></li>
             </div>
             
@@ -115,6 +121,8 @@ library(tidyverse)
 library(ggfortify)  # plot lm objects using ggplot instead of base R
 library(car)  # needed for added-variable plots and dfbetas and dffits
 library(corrplot)
+library(bestglm)  # for stepwise methods
+library(glmnet)  # for ridge, lasso, and elastic net
 
 #to install:
 install.packages("package")</code>
@@ -374,7 +382,78 @@ data[data$cooksd >= 4 / length(data$cooksd), ]</code>
 max(data.vif)
 mean(data.vif)</code>
         </pre>
+        
+        <hr id="selection">
+        <h2>Variable Selection Procedures</h2>
+        <h3>Best Subsets (with BIC)</h3>
+        <pre><code class='language-r'>
+best.subsets.bic <- bestglm(data,
+    IC = "BIC",
+    method = "exhaustive",
+    TopModels = 10)
+    
+# create a data frame with the number of variables and the BIC
+best.subsets.bic.df <- data.frame("num.vars" = 1:dim(data)[2],
+                                  "BIC" = best.subsets.bic$Subsets$BIC)
 
+# plot the BIC values against the number of variables
+ggplot(data = best.subsets.bic.df, mapping = aes(x = num.vars, y = BIC)) +
+  geom_point(size = 3) +
+  geom_line() +
+  geom_point(x = which.min(best.subsets.bic.df$BIC),
+             y = min(best.subsets.bic.df$BIC),
+             color = "red",
+             size = 3) +
+  theme_bw() +
+  theme(axis.title.x = element_text(size = sz),
+        axis.title.y = element_text(size = sz),
+        axis.text.x = element_text(size = sz),
+        axis.text.y = element_text(size = sz),
+        aspect.ratio = 1)
+
+# identify the best model according to the BIC
+summary(best.subsets.bic$BestModel)</code>
+        </pre>
+        
+        <h3>Forward Selection (with AIC)</h3>
+        <pre><code class='language-r'>
+forward.selection.bic <- bestglm(data,
+            IC = "AIC",
+            method = "forward",
+            TopModels = 10)
+            
+# create a data frame with the number of variables and the AIC
+forward.selection.aic.df <- data.frame("num.vars" = 1:dim(data)[2],
+                                  "AIC" = forward.selection.aic$Subsets$AIC)
+
+# plot the BIC values against the number of variables
+ggplot(data = forward.selection.aic.df, mapping = aes(x = num.vars, y = AIC)) +
+  geom_point(size = 3) +
+  geom_line() +
+  geom_point(x = which.min(forward.selection.aic.df$AIC),
+             y = min(forward.selection.aic.df$AIC),
+             color = "red",
+             size = 3) +
+  theme_bw() +
+  theme(axis.title.x = element_text(size = sz),
+        axis.title.y = element_text(size = sz),
+        axis.text.x = element_text(size = sz),
+        axis.text.y = element_text(size = sz),
+        aspect.ratio = 1)
+
+# identify the best model according to the AIC
+summary(forward.selection.aic$BestModel)</code>
+        </pre>
+        
+        <h3>Backward Selection (with PMSE)</h3>
+        <pre><code class='language-r'>
+backward.selection.psme <- bestglm(data,
+        IC = "CV",
+        method = "backward",
+        TopModels = 10)</code>
+        </pre>
+        
+        
         <hr id="metrics">
         <h2>Evaluation Metrics:</h2>
         <pre><code class='language-r'>
