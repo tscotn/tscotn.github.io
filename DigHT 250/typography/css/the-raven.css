@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Scheherazade&family=IM+Fell+English:ital@0;1&display=swap');
+
+body {
+    font-family: 'Scheherazade', serif;
+    background-color: #320e3b;
+    color: #f5f8de;
+}
+
+main {
+    justify-content: center;
+}
+
+div {
+    position: sticky;
+}
+
+body * {
+    text-align: center;
+    margin: 0px;
+}
+
+nav img {
+    /* filter: invert(); */
+    filter: invert() opacity(.5) drop-shadow(0 0 0 #f5f8de);
+    padding-top: 50px;
+    padding: 25px;
+    height: 40px;
+    /* min-height: 50px; */
+}
+
+h1 {
+    padding: 20px;
+    font-family: 'IM Fell English', serif;
+    font-size: 46pt;
+    line-height: 1rem;
+    color: #F4A615;
+}
+
+em {
+    font-family: 'IM Fell English', serif;
+    font-size: 14pt;
+    color: #F4A615;
+}
+
+p {
+    align-content: center;
+    text-align: left;
+    font-size: 20pt;
+    line-height: 1.65rem;
+    padding: 10px;
+    white-space: nowrap;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 34rem;
+}
+
+p:nth-of-type(2):first-letter {
+	float: left;
+	font-size: 60px;
+	line-height: 1.5rem;
+	margin: 0 1px 0 0;
+	}
+
+a {
+    color: #677db7;
+    border-width: 5px;
+    padding: 10px;
+}
+
+nav a:hover {
+    /* border-color: #F4A615; */
+    /* border-width: 3px; */
+    /* border-style: solid; */
+    filter: invert();
+}
+
+footer * {
+    text-decoration: none;
+    text-align: center;
+}
+
+footer p:hover {
+    text-decoration: underline;
+}
+
+@media screen and (max-width: 600px) {
+    nav img {
+        height: 100px;
+    }
+}
+
+/* {"Glaucous":"677db7","Beige":"f5f8de","Russian Violet":"320e3b","Olive Drab 7":"393a10","Dark Purple":"351e29"} */

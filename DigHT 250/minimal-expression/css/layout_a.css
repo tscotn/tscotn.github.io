@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Open+Sans:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Vollkorn:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
+
+@font-face {
+	font-family: 'Hurme';
+	font-style: normal;
+	font-weight: normal;
+	font-display: auto;
+	src: url('https://angelolsen.com/wp-content/uploads/2020/07/HurmeGeometricSans1-Regular.woff2') format('woff2'),
+		url('https://angelolsen.com/wp-content/uploads/2020/07/HurmeGeometricSans1-Regular.woff') format('woff');
+}
+
+:root {
+    /* Angel Olsen */
+    --cultured: #efefefff;
+    --rich-black-fogra-39: #111111ff;
+    --spanish-gray: #9d9d9dff;
+    --davys-grey: #5b5b5bff;
+    --angel-olsen-font: 'Poiret One', cursive;
+
+    /* Big Thief */
+    --laurel-green: #8ea789ff;
+    --beige: #e2ecd3ff;
+    --earth-yellow: #e0a561ff;
+    --y-in-mn-blue: #3d5488ff;
+    --slate-gray: #646f86ff;
+    --big-thief-font: 'Vollkorn', serif;
+
+    /* Goth Babe */
+    --ming: #3e6667ff;
+    --feldgrau: #425947ff;
+    --cinereous: #92766bff;
+    --rich-black-fogra-39: #020300ff;
+    --cadet-blue-crayola: #a4aabaff;
+    --goth-babe-font: 'Caveat Brush', cursive;
+
+    /* French Kicks */
+    --cerulean-crayola: #3ba3c6ff;
+    --almond: #e3d6c6ff;
+    --imperial-red: #f53537ff;
+    --lemon-yellow: #f9f040ff;
+    --true-blue: #3b6cb1ff;
+    --french-kicks-font: 'Open Sans', sans-serif;
+
+    /* Talking Heads */
+    --rich-black-fogra-39: #060607ff;
+    --cultured: #f9f8f9ff;
+    --medium-candy-apple-red: #e01530ff;
+    --talking-heads-font: 'Anton', sans-serif;
+}
+
+.Talking_Heads .a {background-color: var(--rich-black-fogra-39);}
+.Talking_Heads .b {background-color: var(--cultured);}
+.Talking_Heads .c {background-color: var(--cultured);}
+.Talking_Heads .d {background-color: var(--medium-candy-apple-red);}
+
+.Talking_Heads .info * {
+    font-family: var(--talking-heads-font);
+    font-style: italic;
+    line-height: 1.2rem;
+}
+
+.French_Kicks .a {background-color: var(--imperial-red);}
+.French_Kicks .b {background-color: var(--cerulean-crayola);}
+.French_Kicks .c {background-color: var(--lemon-yellow);}
+.French_Kicks .d {background-color: var(--almond);}
+
+.French_Kicks .info * {
+    font-family: var(--french-kicks-font);
+}
+
+.Angel_Olsen .a {background-color: var(--rich-black-fogra-39);}
+.Angel_Olsen .b {background-color: var(--cultured);}
+.Angel_Olsen .c {background-color: var(--spanish-gray);}
+.Angel_Olsen .d {background-color: var(--davys-grey);}
+
+.Angel_Olsen .info * {
+    font-family: var(--angel-olsen-font);
+}
+
+.Big_Thief .a {background-color: var(--laurel-green);}
+.Big_Thief .b {background-color: var(--beige);}
+.Big_Thief .c {background-color: var(--earth-yellow);}
+.Big_Thief .d {background-color: var(--y-in-mn-blue);}
+
+.Big_Thief .info * {
+    font-family: var(--big-thief-font);
+}
+
+.Goth_Babe .a {background-color: var(--ming);}
+.Goth_Babe .b {background-color: var(--feldgrau);}
+.Goth_Babe .c {background-color: var(--cinereous);}
+.Goth_Babe .d {background-color: var(--cadet-blue-crayola);}
+
+.Goth_Babe .info * {
+    font-family: var(--goth-babe-font);
+}
+
+/* <img src="images/play.png"> */
+
+img {
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    margin-top: .5rem;
+}
+
+button {
+    background-color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+header, nav, footer {
+    text-align: center;
+}
+
+main {
+    display: grid;
+    grid-gap: 1rem;
+    padding: 1rem 0;
+}
+
+body {
+    font-family: Helvetica Neue,helvetica,arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif;
+}
+
+.text {
+    width: 75%;
+    margin: 0 auto;
+}
+
+.item {
+    display: grid;
+    margin: 0 auto;
+    width: 50%;
+    grid-template-rows: 1fr 2fr;
+    grid-gap: 1rem;
+}
+
+.colors {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1rem;
+}
+
+.color {
+    border-radius: .5rem;
+    padding-top: 100%;
+}
+
+.info {
+    display: grid;
+    grid-template-rows: 1fr 5fr;
+}
+
+.title {
+    text-align: center;
+    display: inline;
+}
+
+h2 {
+    margin: 0;
+    padding: 0;
+}
+
+@media screen and (min-width: 900px) {
+    .item {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: none;
+        width: 45%;
+        margin: 1rem auto;
+    }
+
+    .colors {
+        grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+    }
+
+    .info {
+        grid-template-rows: none;
+    }
+
+    nav, nav * {
+        margin: 2rem;
+    }
+}
+
+@media screen and (min-width: 1600px) {
+    main {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .item {
+        width: 100%;
+        margin: none;
+    }
+}

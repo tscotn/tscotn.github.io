@@ -1,0 +1,45 @@
+body {
+    /* width: 100%; */
+    background-color: #CAF0F8;
+}
+
+body * {
+    text-align: center;
+    /* align-items: center;
+    justify-content: center; */
+    padding: 30px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 80px;
+    margin: 20px;
+}
+
+nav {
+    justify-content: center;
+    align-items: center;  
+}
+
+img {
+    height: 100px;
+}
+
+img:hover {
+    filter: opacity(.25) drop-shadow(0 0 0 #03045E);
+}
+
+h3 {
+    padding: 0;
+    margin: 0;
+}
+
+footer {
+    /* position: absolute; */
+    width: auto;
+    bottom: 0;
+}
+
+footer * {
+    position: relative;
+}

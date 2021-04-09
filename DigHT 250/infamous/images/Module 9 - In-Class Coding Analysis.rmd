@@ -1,0 +1,118 @@
+---
+title: "Module 9 - Regression Trees"
+subtitle: <center> <h1>In-Class Analysis</h1> </center>
+output: html_document
+---
+
+<style type="text/css">
+h1.title {
+font-size: 40px;
+text-align: center;
+}
+</style>
+
+```{r setup, include=FALSE}
+# load packages here
+library(tidyverse)
+library(rpart)  # for regression trees
+set.seed(123)
+```
+
+### Data and Description
+
+The following variables were collected from 260 baseball players:
+
+Variable | Description
+-------- | -------------
+Hits     | Number of hits in the previous season
+Years    | Number of years played in the major leagues
+Salary   | Annual salary (in thousands of US dollars)
+
+
+Do the following:
+
+1. Download the "BaseballSalary.txt" file from Canvas and put it in the same folder as this R Markdown file.
+2. Read in the data set, call it "hit", and take a look at the top few rows.
+
+```{r}
+hit <- read.table("/Users/scot/Desktop/BaseballSalary.txt", header = TRUE)
+head(hit)
+
+names(hit)
+```
+
+### Create a color-coded scatterplot with Hits on the y-axis, Years on the x-axis, and the points colored and sized by Salary (should match slide 6 in the notes).
+
+```{r, fig.align='center'}
+ggplot(data=hit) + geom_point(aes(x=Years, y=Hits, color=Salary, size=Salary))
+```
+
+## Create an initial regression tree (should match slide 22 in the notes), and determine the ideal size of the tree based on cost-complexity results (should match slides 23 and 24 in the notes).
+
+Note: The `rpart` function does cross-validation automatically by default. So, we fit an initial model, then examine the model to see the result of the cross-validation, and then prune the model based on those results (you will prune in the next code chunk).
+
+```{r, fig.align='center'}
+# Fill in the formula and data arguments below. Note that the method = "anova"
+# argument tells rpart to do regression trees instead of classification trees:
+hit.tree.default <- rpart(formula = Salary ~ Hits + Years,
+                          data = hit,
+                          method = "anova")
+
+hit.tree.default  # print tree results
+
+# Use the "plot" function to plot the tree structure. Once plotted, use the 
+# "text" function to add the splits to the plot as text. Note: you can use 
+# the "margin" argument in the "plot" function to increase the margins so
+# there is room to add text):
+
+plot(hit.tree.default, margin=.05)
+text(hit.tree.default)
+
+# use the "plotcp" function to create the cost-complexity plot
+
+plotcp(hit.tree.default)
+
+# print the table of the cost-complexity results (hint: use the "$" to find
+# the cp table)
+
+hit.tree.default$cptable
+```
+
+### Create a final regression tree that is pruned according to the cost-complexity value you chose from the initial regression tree (depending on the cp value you chose, your plot should match one of the plots on slide 25 of the notes).
+
+```{r, fig.align='center'}
+# Note: use the same code as above to create a tree object, but add the 
+# following argument "control = list(cp = ***))" to rpart, where *** is the cp
+# value you chose from above.
+
+hit.tree.pruned <- rpart(formula = Salary ~ Hits + Years,
+                          data = hit,
+                          method = "anova",
+                         control = list(cp = 0.079))
+
+plot(hit.tree.pruned, margin=.05)
+text(hit.tree.pruned)
+```
+
+### What is the predicted salary for a baseball player with 6 years of experience and 103 hits? Answer this question two ways. First, use the tree you created above to visually go through the tree to determine the predicted salary. Second, use the `predict` function to obtain the predicted salary.
+
+```{r, fig.align='center'}
+# remember: you the predict function has a newdata argument where you need to
+# provide a data frame with the given information (with Hits and Years as 
+# column names)
+new.data <- data.frame(Hits=103, Years=6)
+predict(hit.tree.pruned, new.data)
+```
+
+
+### Create a linear model to compare with the results from the regression tree. Note: you will want to include an interaction between Hits and Years (results should match slide 28 in the notes).
+
+```{r, fig.align='center'}
+(hit.lm <- lm(Salary ~ Hits + Years + Hits:Years, data=hit)) %>% summary()
+```
+
+
+
+### Summary and Conclusions
+
+We learned how to apply another form of regression: regression trees. We started by fitting a "full" tree, decided how to best "prune" the tree, and then we pruned the tree to avoid overfitting. It should be noted that one regression tree by itself is not very reliable - the results can vary widely from regression tree to regression tree. In practice, you should use Random Forests as an alternative, which basically creates many trees and averages the results. We also compared our tree results with the results from a linear model - you get less information with regression trees than you do with linear regression (ex: coefficients, standard errors, etc), but regression trees are not without their advantages (fewer assumptions, robust to multicollinearity).
