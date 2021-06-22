@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Liu+Jian+Mao+Cao&display=swap');
+
+
+:root {
+    /* LCD Soundsystem */
+    --pewter-blue: #77a7b2ff;
+    --battleship-grey: #878787ff;
+    --rich-black-fogra-39: #111111ff;
+    --cultured: #f7f7f7ff;
+    --LCD-font: 'Montserrat', sans-serif;
+
+    /* Earl Sweatshirt */
+    --straw: #f2e774ff;
+    --jet: #2f2d2eff;
+    --quick-silver: #a8a2a1ff;
+    --timberwolf: #d7cfcdff;
+    --earl-font: 'Liu Jian Mao Cao', cursive;
+
+    /* Song Exploder */
+    --black: #000000ff;
+    --medium-turquoise: #77c7c7ff;
+    --light-green: #8fe878ff;
+    --carrot-orange: #ea9423ff;
+    --rose-bonbon: #f9439bff;
+}
+
+.LCD .a {background-color: var(--pewter-blue);}
+.LCD .b {background-color: var(--battleship-grey);}
+.LCD .c {background-color: var(--rich-black-fogra-39);}
+.LCD .d {background-color: var(--cultured);}
+
+.LCD .title {
+    font-family: var(--LCD-font);
+    letter-spacing: .3rem;
+}
+
+.LCD .description {
+    font-family: var(--LCD-font);
+    letter-spacing: .1rem;
+}
+
+.Earl .a {background-color: var(--jet);}
+.Earl .b {background-color: var(--straw);}
+.Earl .c {background-color: var(--quick-silver);}
+.Earl .d {background-color: var(--timberwolf);}
+
+.Earl .info * {
+    font-family: var(--earl-font);
+    font-style: bold;
+}
+
+.SongExploder .a {background-color: var(--medium-turquoise);}
+.SongExploder .b {background-color: var(--light-green);}
+.SongExploder .c {background-color: var(--carrot-orange);}
+.SongExploder .d {background-color: var(--rose-bonbon);}
+
+header, nav, footer {
+    text-align: center;
+}
+
+body {
+    font-family: Helvetica Neue,helvetica,arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif;
+}
+
+main {
+    width: 100%;
+    padding: 1rem 0;
+}
+
+.colors {
+    justify-content: space-around;
+}
+
+.color {
+    min-height: 1.5rem;
+    border-radius: .5rem;
+    margin: .5rem;
+}
+
+.title {
+    text-align: center;
+}
+
+h2 {
+    margin: 0;
+    padding-top: .5rem;
+}
+
+@media screen and (min-width: 900px) {
+
+    .item {
+        display: flex;
+        width: 50%;
+        justify-self: center;
+        margin: 1rem auto;
+        flex-direction: row;
+    }
+
+    .colors {
+        display: flex;
+        width: 50%;
+        flex-wrap: wrap;
+        justify-content: center
+    }
+
+    .color {
+        width: 38%;
+        padding-top: 38%;
+        min-height: auto;
+    }
+    
+    .info {
+        width: 50%;
+    }
+
+    nav, nav * {
+        margin: 2rem;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    main {
+        display: flex;
+        flex-flow: wrap;
+    }
+}

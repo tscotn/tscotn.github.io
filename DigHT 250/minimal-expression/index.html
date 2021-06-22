@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>spotify wrapped</title>
+    <link rel="stylesheet" href="css/layout_a.css">
+</head>
+<body>
+    <header>
+        <h1>My Spotify Wrapped 2020 in Colors and Fonts</h1>
+        <nav>
+            <a href="index.html">home</a>
+            <a href="layout_a.html">top artists</a>
+            <a href="layout_b.html">top tracks</a>
+        </nav>
+
+        <div class="text">
+            <p>Spotify users wait in anticipation for the personal end-of-year presentation of songs and podcasts they listen to most year after year. Here, I share my 2020 results in the form of colors and fonts. The colors are inspired by the song or artist's album art, with fonts chosen to match the mood of the artist.</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="item Talking_Heads">
+            <div class="colors">
+              <div class="color a"></div>
+              <div class="color b"></div>
+              <div class="color c"></div>
+              <div class="color d"></div>
+            </div>
+            <div class="info">
+              <div class="title">
+                  <h2>TALKING HEADS</h2>
+                  <!-- <audio controls>
+                    <source src="audio/Talking Heads - Radiohead.mp3" type="audio/mp3">
+                  Your browser is having trouble playing this song: Radio Head - Talking Heads
+                  </audio> -->
+                  <audio id="talking_heads" src="audio/Talking Heads - Radiohead.mp3">Your browser is having trouble playing this song: Radio Head - Talking Heads</audio>
+                  <button onclick="document.getElementById('talking_heads').play()"><img src="images/play.png"></button> 
+                  <button onclick="document.getElementById('talking_heads').pause()"><img src="images/pause.png"></button>
+              </div>
+              <div class="description">
+                  <p>My incumbent most listened-to artist of the year. Red, black and white represent the album art of True Stories (with tracks like "Radio Head" and "Wild, Wild Life").</p>
+                    <p>Font: Italicized Anton, inspired by advertizing fonts like Permanent Headline, which was designed in the 60s and the font used on "True Stories" and the David Byrne art-movie.</p>
+              </div>
+            </div>
+          </div>
+      
+          <div class="item French_Kicks">
+            <div class="colors">
+              <div class="color a"></div>
+              <div class="color b"></div>
+              <div class="color c"></div>
+              <div class="color d"></div>
+            </div>
+            <div class="info">
+              <div class="title">
+                  <h2>Carried Away - French Kicks</h2>
+                  <audio id="carried_away" src="audio/Carried Away.mp3">Your browser is having trouble playing this song: Carried Away - French Kicks</audio>
+                    <button onclick="document.getElementById('carried_away').play()"><img src="images/play.png"></button> 
+                    <button onclick="document.getElementById('carried_away').pause()"><img src="images/pause.png"></button>
+              </div>
+              <div class="description">
+                  <p>My most listened-to song, which Pitchfork called a "nod" to Talking Heads, clocking in at 35 listens. </p>
+                    <p>Font: Open Sans, which seems to line up best with the vertical font on the "Swimming" album cover.</p>
+                </div>
+            </div>
+          </div>
+    </main>
+
+    <footer>
+        <h3>scot nielson • 2020</h3>
+    </footer>
+</body>
+</html>
+
+<!-- Pop Culture Items
+Anything considered to be a part of the popular culture. Typically taken from various media sources.
+
+Books
+Television
+Movies
+etc.
+Minimal Descriptors
+Color
+Font
+Sound/Video -->
+
+<!-- Creative Requirements
+On the homepage, define two different items from pop culture with a single sound or video clip and a font choice. Give the name of the item and then describe the chosen media and tell me why you feel it and the font define each item.
+
+On two supporting pages, define 3 different pop culture items with only four colors and a font choice. Give the name of the item and then explain why the colors and font define each item for you.
+
+In summary
+2 sounds/video clips
+3 pages
+8 pop culture items
+8 fonts
+24 colors -->
+
+<!-- Technical Requirements
+CSS custom properties
+One supporting page must use flex box for layout
+One supporting page must use CSS grid for layout
+No orphan pages
+Responsive design
+Navigation and Homepage layout decisions are yours to make
+One supporting page must use Layout A (Flexbox)
+One supporting page must use Layout B (Grid) -->

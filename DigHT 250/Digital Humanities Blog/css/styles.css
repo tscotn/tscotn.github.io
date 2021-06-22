@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Montserrat&display=swap');
+
+:root {
+    --headline-font: 'Major Mono Display', monospace;
+    --body-font: 'Montserrat', sans-serif;
+
+    --background-color: #3c887eff;
+    --headline-color: #a17c6b;
+    --header-color: #e0f2e9;
+    --anchor-color: #ceb5a7;
+    --body-color: #e0f2e9;
+    --transition-color: #A9DBC3;
+}
+
+html {
+    text-align: center;
+}
+
+/* default css for mobile */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    font-family: var(--body-font);
+}
+
+header, footer {
+    padding: 1rem 0;
+    background-color: var( --header-color);
+    font-family: var(--headline-font);
+}
+
+body * {
+    color: var(--body-color);
+}
+
+h1, h2, h3 {
+    color: var(--headline-color);
+    font-family: var(--headline-font);
+}
+
+nav * {
+    margin: 0 2rem;
+}
+
+a {
+    color: var(--anchor-color);
+    text-decoration: none;
+}
+
+header a:hover {
+    text-decoration: revert;
+}
+
+.card {
+    background-color: var(--header-color);
+    height: auto;
+    padding: 1rem;
+    border-radius: .5rem;
+    transition: background-color .5s;
+    border-color: var(--background-color);
+    border: solid;
+    margin: 1rem;
+}
+
+.card h2, .card p {
+    padding: 0;
+    margin: 0;
+    color: var(--headline-color);
+    text-indent: 0;
+}
+
+p {
+    text-indent: 2rem;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+/* default desktop */
+@media screen and (min-width: 600px) {
+    nav {
+        display: block;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .card {
+        width: 15rem;
+        height: auto;
+    }
+
+    .card:hover {
+        background-color: var(--transition-color);
+    }
+
+    footer {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+    }
+
+    #description {
+        width: 75%;
+        text-align: left;
+        padding: 1rem;
+        margin-left: 2rem;
+    }
+}
+
+/* printing */
+@media print {
+    html {
+        text-align: left;
+    }
+
+    html * {
+        font-family: var(--body-font);
+        color: black !important; 
+    }
+
+    .card {
+        border-style: none;
+    }
+
+    .card {
+        height: auto;
+    }
+}
